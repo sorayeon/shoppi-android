@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- navigation fragment id 와 menu item 의 아이디를 일치시켜줘야한다. -->
     <item
         android:id="@+id/navigation_category"
         android:icon="@drawable/selector_category_icon"
