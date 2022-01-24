@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import org.json.JSONObject
 
 class HomeFragment : Fragment() {
 
@@ -22,14 +23,32 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val button = view.findViewById<Button>(R.id.btn_enter_product_detail)
-        button.setOnClickListener {
-            findNavController().navigate(R.id.action_home_to_product_detail)
-        }
+//        val button = view.findViewById<Button>(R.id.btn_enter_product_detail)
+//        button.setOnClickListener {
+//            findNavController().navigate(R.id.action_home_to_product_detail)
+//        }
 
         val assetLoader = AssetLoader()
         val homeData = assetLoader.getJsonString(requireContext(), "home.json")
 
         Log.d("HomeFragment", homeData ?: "")
+
+        if (!homeData.isNullOrEmpty()) {
+            val root = JSONObject(homeData)
+            val title = root.getJSONObject("title")
+            val text = title.getString("text")
+            val iconUrl = title.getString("icon_url")
+            val titleValue = Title(text, iconUrl)
+            titleValue.text
+
+            val topBanners = root.getJSONArray("top_banners")
+            val firstBanner = topBanners.getJSONObject(0)
+            val label = firstBanner.getString("label")
+            val productDetail = firstBanner.getJSONObject("product_detail")
+            val price = productDetail.getInt("price")
+
+            Log.d("title", "text=$text, iconUrl=$iconUrl")
+            Log.d("firstBanner", "label=$label, price=$price")
+        }
     }
 }
