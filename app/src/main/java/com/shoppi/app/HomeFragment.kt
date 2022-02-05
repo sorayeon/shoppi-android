@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import org.json.JSONObject
 
@@ -51,6 +52,19 @@ class HomeFragment : Fragment() {
             viewPager.adapter = HomeBannerAdapter().apply {
                 submitList(homeData.topBanners)
             }
+
+            val pageWidth =  resources.getDimension(R.dimen.viewpager_item_width)
+            val pageMargin =  resources.getDimension(R.dimen.viewpager_item_margin)
+            val screenWidth = resources.displayMetrics.widthPixels
+            val offset = screenWidth - pageWidth - pageMargin
+
+            viewPager.offscreenPageLimit = 3
+            viewPager.setPageTransformer { page, position ->
+                page.translationX = position * -offset
+            }
+            TabLayoutMediator(viewPagerIndicator, viewPager) { tab, position ->
+
+            }.attach()
         }
     }
 }
