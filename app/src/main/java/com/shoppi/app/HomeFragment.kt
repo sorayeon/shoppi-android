@@ -10,7 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
 import org.json.JSONObject
 
 class HomeFragment : Fragment() {
@@ -28,20 +31,26 @@ class HomeFragment : Fragment() {
 
         val toolbarTitle = view.findViewById<TextView>(R.id.toolbar_home_title)
         val toolbarIcon = view.findViewById<ImageView>(R.id.toolbar_home_icon)
+        val viewPager = view.findViewById<ViewPager2>(R.id.viewpager_home_banner)
+        val viewPagerIndicator = view.findViewById<TabLayout>(R.id.viewpager_home_banner_indicator)
 
         val assetLoader = AssetLoader()
-        val homeData = assetLoader.getJsonString(requireContext(), "home.json")
+        val homeJsonString = assetLoader.getJsonString(requireContext(), "home.json")
 
-        if (!homeData.isNullOrEmpty()) {
-            val root = JSONObject(homeData)
-            val title = root.getJSONObject("title")
-            val text = title.getString("text")
-            val iconUrl = title.getString("icon_url")
-            Log.d("HomeFragment", "text: $text, iconUrl: $iconUrl")
+        if (!homeJsonString.isNullOrEmpty()) {
+            val gson = Gson()
+            val homeData = gson.fromJson(homeJsonString, HomeData::class.java)
 
-            toolbarTitle.text = text
-            GlideApp.with(this).load(iconUrl).into(toolbarIcon)
+            Log.d("HomeFragment", "text: ${homeData.title.text}, iconUrl: ${homeData.title.iconUrl}")
 
+            toolbarTitle.text = homeData.title.text
+            GlideApp.with(this)
+                .load(homeData.title.iconUrl)
+                .into(toolbarIcon)
+
+            viewPager.adapter = HomeBannerAdapter().apply {
+                submitList(homeData.topBanners)
+            }
         }
     }
 }
