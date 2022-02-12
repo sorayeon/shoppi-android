@@ -6,7 +6,7 @@ import com.shoppi.app.network.ApiClient
 class CategoryRemoteDataSource(
     private val apiClient: ApiClient,
 ) : CategoryDataSource {
-    override fun getCategories(): List<Category> {
+    override suspend fun getCategories(): List<Category> {
         return apiClient.getCategories()
     }
 }
