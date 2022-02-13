@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -45,19 +46,34 @@ dependencies {
     // navigation graph
     implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
-
-    implementation "com.github.bumptech.glide:glide:$glideVersion"
-    kapt "com.github.bumptech.glide:compiler:$glideVersion"
-
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
+    // fragment KTX
+    implementation "androidx.fragment:fragment-ktx:1.4.1"
     // viewpager2
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 
-    // gson
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:29.1.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    // Network
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation platform("com.squareup.okhttp3:okhttp-bom:4.9.3")
+    implementation "com.squareup.okhttp3:okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor"
+
+    // Coroutine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
+
+    // Externals
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
+    // Gson
     implementation "com.google.code.gson:gson:2.8.9"
 
-    // fragment KTX
-    implementation "androidx.fragment:fragment-ktx:1.4.1"
-
+    // Test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
